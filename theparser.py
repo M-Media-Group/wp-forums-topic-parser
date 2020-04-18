@@ -1,4 +1,4 @@
-import feedparser, re
+import feedparser, re, os
 
 
 class TheParser():
@@ -14,6 +14,10 @@ class TheParser():
         self.feedurl = paramrssurl
         self.parse()
 
+    # Clear the console window
+    def cls(self):
+        os.system('cls' if os.name=='nt' else 'reset')
+
     def print_output(self, thefeedentry, violation_type, show_description = True):
         print("__________")
         print(violation_type+': ' + thefeedentry.get("link", ""))
@@ -27,6 +31,8 @@ class TheParser():
 
     def parse(self):
         thefeed = feedparser.parse(self.feedurl)
+
+        self.cls()
 
         print("Getting Feed Data")
         print(thefeed.feed.get("title", ""))
@@ -49,9 +55,8 @@ class TheParser():
             if any(self.contains_word(thefeedentry.description.lower(), word.lower()) for word in self.credentials):
                 self.print_output(thefeedentry, 'Possible credentials risk')
 
-            if any(self.contains_word(thefeedentry.description.lower(), word.lower()) for word in self.plugins):
-                self.print_output(thefeedentry, 'Plugin specific', False)
+            # if any(self.contains_word(thefeedentry.description.lower(), word.lower()) for word in self.plugins):
+            #     self.print_output(thefeedentry, 'Plugin specific', False)
 
-            if any(self.contains_word(thefeedentry.description.lower(), word.lower()) for word in self.themes):
-                self.print_output(thefeedentry, 'Theme specific', False)
-
+            # if any(self.contains_word(thefeedentry.description.lower(), word.lower()) for word in self.themes):
+            #     self.print_output(thefeedentry, 'Theme specific', False)
